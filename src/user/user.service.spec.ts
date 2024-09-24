@@ -1,19 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { HttpService } from '@nestjs/axios';
-import { createMock, DeepMocked } from '@golevelup/ts-jest';
+
+import { createMock } from '@golevelup/ts-jest';
+import { UserController } from './user.controller';
+import { CreateUserDto } from './dto/create-user.dto';
 describe('UserService', () => {
   let service: UserService;
-  let httpService: DeepMocked<HttpService>;
-  const mockUserRepository = {
-    create: jest.fn(),
-    // find: jest.fn(),
-    // findOne: jest.fn(),
-    // delete: jest.fn(),
-  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserService],
+      controllers: [UserController],
     })
       .useMocker(createMock)
       .compile();
@@ -22,6 +19,16 @@ describe('UserService', () => {
   });
   describe('create', () => {
     it('should be defined', async () => {
+      const createUserDto: CreateUserDto = { name: 'John Doe' };
+      const spy = jest
+        .spyOn(service, 'create')
+        .mockImplementation(() => 'This action adds a new user');
+      const result = await service.create(createUserDto);
+
+      expect(spy).toHaveBeenCalledWith(createUserDto);
+
+      // expect(result.statusCode).toBe(201);
+      expect(result).toBe('This action adds a new user');
       // const createData = { title: '' };
       // jest
       //   .spyOn(service, 'create')
@@ -32,7 +39,6 @@ describe('UserService', () => {
       //   'This action adds a new user',
       // );
       // expect(result).toEqual('This action adds a new user');
-
       // const create = service.create('');
       // expect(create).statusCode(201);
       // expect(create).toBe('This action adds a new user');
