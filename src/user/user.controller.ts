@@ -7,6 +7,6 @@ export class UserController {
 
   @Post()
   create() {
-    return this.userService.create();
+    return this.userService.create(user);
   }
 }

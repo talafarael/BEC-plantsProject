@@ -3,7 +3,8 @@ import { UserService } from './user.service';
 
 import { createMock } from '@golevelup/ts-jest';
 import { UserController } from './user.controller';
-import { CreateUserDto } from './dto/create-user.dto';
+
+import { prismaMock } from 'src/singleton';
 describe('UserService', () => {
   let userService: UserService;
 
@@ -18,6 +19,14 @@ describe('UserService', () => {
     userService = module.get<UserService>(UserService);
   });
   describe('create', () => {
-    it('should be defined', async () => {});
+    const user = {
+      id: 'aaa',
+      name: 'Rich',
+      password: 'aaaa',
+    };
+    prismaMock.admin.create.mockResolvedValue(user);
+    it('should be defined', async () => {
+      expect(userService.create(user)).toEqual(user);
+    });
   });
 });

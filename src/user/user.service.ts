@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-
+import prisma from 'src/client';
+interface CreateUser {
+  name: string;
+  password: string;
+}
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
-  create() {
+  async create(user: CreateUser) {
     try {
-      const res = this.prisma.admin.create({
-        data: {
-          name: 'name',
-          password: 'pass',
-        },
-      });
+      const res = await prisma.admin.create({ data: user });
       return res;
     } catch (e) {}
   }
