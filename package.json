@@ -69,7 +69,7 @@
       "**/*.(t|j)s"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/singleton.ts"
+      "<rootDir>/context.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

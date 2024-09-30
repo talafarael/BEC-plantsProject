@@ -3,11 +3,12 @@ import { UserService } from './user.service';
 
 import { createMock } from '@golevelup/ts-jest';
 import { UserController } from './user.controller';
+import { MockContext, Context, createMockContext } from '../context';
 
-import { prismaMock } from 'src/singleton';
 describe('UserService', () => {
   let userService: UserService;
-
+  let mockCtx: MockContext;
+  let ctx: Context;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserService],
@@ -15,7 +16,8 @@ describe('UserService', () => {
     })
       .useMocker(createMock)
       .compile();
-
+    mockCtx = createMockContext();
+    ctx = mockCtx as unknown as Context;
     userService = module.get<UserService>(UserService);
   });
   describe('create', () => {
@@ -24,9 +26,10 @@ describe('UserService', () => {
       name: 'Rich',
       password: 'aaaa',
     };
-    prismaMock.admin.create.mockResolvedValue(user);
+
     it('should be defined', async () => {
-      expect(userService.create(user)).toEqual(user);
+      await mockCtx.prisma.admin.create.mockResolvedValue(user);
+      expect(userService.create(user, ctx)).resolves.toEqual(user);
     });
   });
 });
