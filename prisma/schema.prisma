@@ -12,8 +12,8 @@ datasource db {
    provider = "mongodb"
   url=env("DATABASE_URL")
 }
-model admin{
-   id      String   @id @default(auto()) @map("_id") @db.ObjectId
+model user{
+    id      String   @id @default(auto()) @map("_id") @db.ObjectId
     name String
     password String
 }

@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { createMock } from '@golevelup/ts-jest';
 import { UserController } from './user.controller';
 import { MockContext, Context, createMockContext } from '../context';
+import { RegisterUserDto } from './dto/create-user.dto';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -20,16 +21,29 @@ describe('UserService', () => {
     ctx = mockCtx as unknown as Context;
     userService = module.get<UserService>(UserService);
   });
-  describe('create', () => {
-    const user = {
-      id: 'aaa',
+  describe('register', () => {
+    const user: RegisterUserDto = {
       name: 'Rich',
       password: 'aaaa',
     };
-
-    it('should be defined', async () => {
-      await mockCtx.prisma.admin.create.mockResolvedValue(user);
-      expect(userService.create(user, ctx)).resolves.toEqual(user);
+    const userMock = {
+      id:"aa",
+      name: 'Rich',
+      password: 'aaaa',
+    };
+    beforeEach(() => {
+     
+      jest.clearAllMocks();
+    });
+    it('Name is required', async () => {
+      await mockCtx.prisma.user.findOne.mockResolvedValue(userMock);
+     
+      expect(userService.register(user, ctx)).rejects.toThrowError('Name is required');
+    });
+    it("user successful create", async () => {
+     mockCtx.prisma.user.findOne.mockResolvedValue(undefined);
+     mockCtx.prisma.user.create.mockResolvedValue(userMock);
+      await expect(userService.register(user, ctx)).resolves.toBe("user sucsseful create");
     });
   });
 });
