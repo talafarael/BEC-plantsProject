@@ -8,8 +8,6 @@ import {
 import { UserService } from './user.service';
 
 import { RegisterUserDto } from './dto/create-user.dto';
-import { ContextCreator } from '@nestjs/core/helpers/context-creator';
-import { Context } from 'src/context';
 
 @Controller('user')
 export class UserController {
@@ -17,7 +15,7 @@ export class UserController {
 
   @Post('register')
   @UsePipes(new ValidationPipe())
-  async register(@Body() user: RegisterUserDto, @Body('ctx') ctx: Context) {
-    return this.userService.register(user,ctx);
+  async register(@Body() user: RegisterUserDto) {
+    return this.userService.register(user);
   }
 }
