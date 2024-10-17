@@ -7,10 +7,10 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  async register(dto: RegisterUserDto) {
+  async register(dto: RegisterUserDto,ctx:Context) {
     try {
       console.log('all goofd');
-      const user = await this.prisma.user.findFirst({
+      const user = await ctx.prisma.user.findFirst({
         where: {
           name: dto.name,
         },
@@ -21,7 +21,7 @@ export class UserService {
 
       dto.password = await bcrypt.hash(dto.password, 7);
       console.log(dto);
-      const createUser = await this.prisma.user.create({
+      const createUser = await ctx.prisma.user.create({
         data: dto,
       });
 
