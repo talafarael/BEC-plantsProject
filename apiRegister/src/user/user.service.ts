@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { RegisterUserDto } from './dto/create-user.dto';
 // import * as bcrypt from 'bcryptjs';
 // import { generateAccessToken } from 'utils/generationToken';
-import { PrismaService } from '../../src/prisma.service';
+import { PrismaService } from '../prisma.service';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -33,10 +33,14 @@ export class UserService {
       throw new NotFoundException(e);
     }
   }
-  async login(dto: RegisterUserDto) {
-    try {
-    } catch (e) {
-      throw new NotFoundException(e);
-    }
+  // async login(dto: RegisterUserDto) {
+  //   try {
+  //   } catch (e) {
+  //     throw new NotFoundException(e);
+  //   }
+  // }
+  async getUser() {
+    console.log('get user');
+    return 'user get';
   }
 }
