@@ -1,30 +1,15 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { Client, ClientKafka, Transport } from '@nestjs/microservices';
-
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 @Controller('user')
-export class PostsController {
-  @Client({
-    transport: Transport.KAFKA,
-    options: {
-      client: {
-        clientId: 'posts',
-        brokers: ['localhost:9092'],
-      },
-      consumer: {
-        groupId: 'posts-consumer',
-      },
-    },
-  })
-  client: ClientKafka;
-  async onModuleInit() {
-    // this.client.subscribeToResponseOf('add.new.post');
-    this.client.subscribeToResponseOf('get.posts.list');
-
-    await this.client.connect();
-  }
+export class AuthController {
+  constructor(
+    @Inject('USER_MICROSERVICE') private readonly user_client: ClientProxy,
+  ) {}
 
   @Get('/')
-  getList() {
-    return this.client.send('get.posts.list', '');
+  async getList() {
+    const data = await this.user_client.send('getList', {}).toPromise();
+    console.log(data); // Or any appropriate data to send
+    return data; // Provide both the event name and the data
   }
 }

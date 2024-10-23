@@ -8,7 +8,7 @@ import {
 import { UserService } from './user.service';
 
 import { RegisterUserDto } from './dto/create-user.dto';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class UserController {
@@ -19,8 +19,10 @@ export class UserController {
   // async register(@Body() user: RegisterUserDto) {
   //   return this.userService.register(user);
   // }
-  @MessagePattern('get.posts.list')
-  getPosts() {
-    return this.userService.getUser();
+  @EventPattern('getList')
+  async getPosts() {
+    const data = await this.userService.getUser();
+    console.log(data);
+    return data;
   }
 }
