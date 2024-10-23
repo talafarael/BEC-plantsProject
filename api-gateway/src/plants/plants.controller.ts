@@ -9,7 +9,7 @@ export class PlantsController {
   @Get('/plants')
   getList() {
     const data = {}; // Or any appropriate data to send
-    this.user_client.emit('/', data); // Provide both the event name and the data
+    this.user_client.send('/', data); // Provide both the event name and the data
     return;
   }
 }

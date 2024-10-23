@@ -10,7 +10,7 @@ import { PlantsController } from './plants.controller';
       {
         name: 'PLANTS_MICROSERVICE',
         transport: Transport.TCP,
-        options: { port: 3002 },
+        options: { port: 3003 },
       },
     ]),
   ],

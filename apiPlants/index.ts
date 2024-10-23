@@ -1,28 +1,20 @@
-const express = require('express')
-const app = express()
-const port = 3005
-const { ClientTCP } = require('@nestjs/microservices');
-const { lastValueFrom } = require('rxjs');
+import { NestFactory } from '@nestjs/core';
+import { PlantsModule } from './plants.module';
+import * as express from 'express';
 
-(async () => {
-    const client = new ClientTCP({
-        host: 'localhost',
-        port: 3002,
-    });
+async function bootstrap() {
+  const app = await NestFactory.create(PlantsModule);
+  
+  const expressApp = express();
+  expressApp.use(express.json());
 
-    await client.connect();
+  expressApp.get('/process-data', (req: any, res: any) => {
+    const { data } = req.body;
+    res.json({ message: 'Data processed', data });
+  });
 
-    app.get('/', async (req:any, res:any) => {
-        const pattern = { cmd: 'sum' };
-        const data = JSON.parse(req.query.data)
+  app.use(expressApp); // Integrate Express into Nest
 
-        const result = await lastValueFrom(client.send(pattern, data))
-
-        res.json({ result })
-    })
-
-    app.listen(port, () => {
-        console.log(`Example app listening at http://localhost:${port}`)
-    })
-
-})();
+  await app.listen(3003);
+}
+bootstrap();
