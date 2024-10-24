@@ -1,20 +1,20 @@
-import { NestFactory } from '@nestjs/core';
-import { PlantsModule } from './plants.module';
-import * as express from 'express';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-async function bootstrap() {
-  const app = await NestFactory.create(PlantsModule);
-  
-  const expressApp = express();
-  expressApp.use(express.json());
+const app = express();
+const port = 3003;
 
-  expressApp.get('/process-data', (req: any, res: any) => {
-    const { data } = req.body;
-    res.json({ message: 'Data processed', data });
-  });
+app.use(bodyParser.json());
+app.use(cors());
 
-  app.use(expressApp); // Integrate Express into Nest
 
-  await app.listen(3003);
-}
-bootstrap();
+app.get('/pl', (req:any, res:any) => {
+  console.log("AAAAA");
+
+  res.send("Route '/pl' is working!");
+});
+
+app.listen(port, () => {
+  console.log(`Catalog service listening at http://localhost:${port}`);
+});

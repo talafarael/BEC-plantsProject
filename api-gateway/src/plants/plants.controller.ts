@@ -1,15 +1,16 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-@Controller('user')
+@Controller('plants')
 export class PlantsController {
   constructor(
     @Inject('PLANTS_MICROSERVICE') private readonly user_client: ClientProxy,
   ) {}
 
   @Get('/plants')
-  getList() {
+   async plants() {
+    console.log('AAAA')
     const data = {}; // Or any appropriate data to send
-    this.user_client.send('/', data); // Provide both the event name and the data
+   await this.user_client.send('pl', data); // Provide both the event name and the data
     return;
   }
 }

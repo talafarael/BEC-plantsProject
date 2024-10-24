@@ -8,6 +8,7 @@ export class AuthController {
 
   @Get('/')
   async getList() {
+    console.log("AAA")
     const data = await this.user_client.send('getList', {}).toPromise();
     console.log(data); // Or any appropriate data to send
     return data; // Provide both the event name and the data
