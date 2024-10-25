@@ -1,20 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const net = require("net");
+const server = net.createServer((socket:any) => {
+  console.log("Client connected");
 
-const app = express();
-const port = 3003;
+  socket.on("data", (data:any) => {
+    console.log("Received:", data.toString());
+  });
 
-app.use(bodyParser.json());
-app.use(cors());
+  socket.on("end", () => {
+    console.log("Client disconnected");
+  });
 
 
-app.get('/pl', (req:any, res:any) => {
-  console.log("AAAAA");
-
-  res.send("Route '/pl' is working!");
+  socket.write("Hello from the server\n");
+}).on("error", (err:any) => {
+  throw err;
 });
 
-app.listen(port, () => {
-  console.log(`Catalog service listening at http://localhost:${port}`);
+
+server.listen(3003, () => {
+  console.log("opened server on", server.address());
 });
