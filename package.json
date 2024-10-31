@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "start": "concurrently \"npm run start:apiRegister\" \"npm run start:apiGateway\"",
+        "start:apiRegister": "cd ./apiRegister && nest start",
+    "start:apiGateway": "cd ./api-gateway && nest start"
+    },
+    "devDependencies": {
+        "concurrently": "^9.0.1"
+    }
+}
