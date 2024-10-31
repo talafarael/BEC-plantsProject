@@ -14,11 +14,10 @@ import { EventPattern, MessagePattern } from '@nestjs/microservices';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @Post('register')
-  // @UsePipes(new ValidationPipe())
-  // async register(@Body() user: RegisterUserDto) {
-  //   return this.userService.register(user);
-  // }
+  @EventPattern('register')
+  async register(user: RegisterUserDto) {
+    return this.userService.register(user);
+  }
   @EventPattern('getList')
   async getPosts() {
     const data = await this.userService.getUser();
